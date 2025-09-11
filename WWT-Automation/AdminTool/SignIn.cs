@@ -32,6 +32,18 @@ namespace WWT_Automation.AdminTool
             wait.Until(ExpectedConditions.ElementIsVisible(By.Name("topnavForm")));
         }
 
+        [Test]
+        public void UnsuccessfulSignInWithInvalidCredentials()
+        {
+            driver.Url = "https://apadmintool.zero21.eu/";
+            driver.FindElement(By.Id("UserName")).SendKeys("SuperAdmin");
+            driver.FindElement(By.Id("Password")).SendKeys("T21kyytt$LVP#T21kyytt$LVP#");
+
+            driver.FindElement(By.CssSelector("button[type='submit']")).Click();
+            wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//li[normalize-space()='Invalid credentials.']")));
+        }
+
+        [TearDown]
         public void Dispose()
         {
             driver.Quit();
