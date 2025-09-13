@@ -22,7 +22,7 @@ namespace WWT_Automation.AdminTool
         }
 
         [Test]
-        public void SuccessfulSignIn()
+        public void SignIn_ValidCredentials_SuccessfulSignIn()
         {
             driver.Url = "https://apadmintool.zero21.eu/";
             driver.FindElement(By.Id("UserName")).SendKeys("SuperAdmin");
@@ -33,7 +33,7 @@ namespace WWT_Automation.AdminTool
         }
 
         [Test]
-        public void UnsuccessfulSignInWithInvalidCredentials()
+        public void SignIn_InvalidPassword_ErrorMessage()
         {
             driver.Url = "https://apadmintool.zero21.eu/";
             driver.FindElement(By.Id("UserName")).SendKeys("SuperAdmin");
@@ -42,6 +42,34 @@ namespace WWT_Automation.AdminTool
             driver.FindElement(By.CssSelector("button[type='submit']")).Click();
             wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//li[normalize-space()='Invalid credentials.']")));
         }
+
+        [Test]
+        public void SignIn_InvalidUsername_ErrorMessage()
+        {
+            driver.Url = "https://apadmintool.zero21.eu/";
+            driver.FindElement(By.Id("UserName")).SendKeys("NonExistingUser");
+            driver.FindElement(By.Id("Password")).SendKeys("T21kyytt$LVP#");
+
+            driver.FindElement(By.CssSelector("button[type='submit']")).Click();
+            wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("(//li[normalize-space()=\"User doesn't exist or user is not active.\"])")));
+        }
+
+        [Test]
+        public void SignIn_ValidCredentialsWith2FA_6DigitScreenAppears()
+        {
+            driver.Url = "https://apadmintool.zero21.eu/";
+            driver.FindElement(By.Id("UserName")).SendKeys("testAdmin");
+            driver.FindElement(By.Id("Password")).SendKeys("testAdmin1");
+
+            driver.FindElement(By.CssSelector("button[type='submit']")).Click();
+            wait.Until(ExpectedConditions.ElementIsVisible(By.Id("Code")));
+        }
+
+        /*
+         TODO
+        - ForgotPassword case
+        - Complete 2FA is possible
+         */
 
         [TearDown]
         public void Dispose()
