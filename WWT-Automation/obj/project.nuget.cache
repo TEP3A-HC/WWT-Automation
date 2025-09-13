@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "9BegqVh7o5pHk+omX0i2+nmq5jyFs5FVLtBbXxKc6pCbGYn0VuCwrs6WCTZF32vUj/6nnxoDpfzh24eTIU0SOA==",
+  "dgSpecHash": "Rx25R6z2BLEKavYxtt7JkgZx2n85fHtjW04NvnG4VX7I4K0yWqt5UyPi9CcXmO6QAD/8XTZ0/vicljH/YWB94A==",
   "success": true,
   "projectFilePath": "C:\\Users\\Nikola\\source\\repos\\WWT-Automation\\WWT-Automation\\WWT-Automation.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Nikola\\.nuget\\packages\\anglesharp\\1.1.2\\anglesharp.1.1.2.nupkg.sha512",
     "C:\\Users\\Nikola\\.nuget\\packages\\coverlet.collector\\6.0.0\\coverlet.collector.6.0.0.nupkg.sha512",
+    "C:\\Users\\Nikola\\.nuget\\packages\\dotnetseleniumextras.waithelpers\\3.11.0\\dotnetseleniumextras.waithelpers.3.11.0.nupkg.sha512",
     "C:\\Users\\Nikola\\.nuget\\packages\\microsoft.codecoverage\\17.8.0\\microsoft.codecoverage.17.8.0.nupkg.sha512",
     "C:\\Users\\Nikola\\.nuget\\packages\\microsoft.net.test.sdk\\17.8.0\\microsoft.net.test.sdk.17.8.0.nupkg.sha512",
     "C:\\Users\\Nikola\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
