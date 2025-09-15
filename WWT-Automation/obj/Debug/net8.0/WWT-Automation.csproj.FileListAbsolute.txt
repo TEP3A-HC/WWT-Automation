@@ -229,3 +229,8 @@ D:\Automation\WWT-Automation\obj\Debug\net8.0\WWT-Automation.pdb
 D:\Automation\WWT-Automation\obj\Debug\net8.0\WWT-Automation.genruntimeconfig.cache
 D:\Automation\WWT-Automation\obj\Debug\net8.0\ref\WWT-Automation.dll
 D:\Automation\WWT-Automation\bin\Debug\net8.0\SeleniumExtras.PageObjects.dll
+C:\Users\Nikola\source\repos\WWT-Automation\WWT-Automation\bin\Debug\net8.0\SeleniumExtras.PageObjects.dll
+C:\Users\Nikola\source\repos\WWT-Automation\WWT-Automation\bin\Debug\net8.0\appsettings.json
+C:\Users\Nikola\source\repos\WWT-Automation\WWT-Automation\bin\Debug\net8.0\Microsoft.Extensions.Configuration.dll
+C:\Users\Nikola\source\repos\WWT-Automation\WWT-Automation\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\Nikola\source\repos\WWT-Automation\WWT-Automation\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll

@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using Microsoft.Extensions.Configuration;
+using OpenQA.Selenium;
 using OpenQA.Selenium.BiDi.Communication;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
@@ -6,6 +7,8 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 using System.Configuration;
 using WebDriverManager.DriverConfigs.Impl;
+using System;
+using WWT_Automation.Config;
 
 namespace WWT_Automation.Utilities
 {
@@ -17,7 +20,7 @@ namespace WWT_Automation.Utilities
         [SetUp]
         public void StartBrowser()
         {
-            string browserName = ConfigurationManager.AppSettings["browser"];
+            string browserName = TestConfig.Current.Selenium.Browser;
             InitBrowser(browserName);
             driver.Manage().Window.Maximize();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
