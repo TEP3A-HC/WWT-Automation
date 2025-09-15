@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using SeleniumExtras.WaitHelpers;
+using WWT_Automation.PageObjects;
 using WWT_Automation.Utilities;
 
 namespace WWT_Automation.AdminTool
@@ -10,8 +11,10 @@ namespace WWT_Automation.AdminTool
         [Test]
         public void SignIn_ValidCredentials_SuccessfulSignIn()
         {
+            SignInPage signInPage = new SignInPage(driver);
+            
             driver.Url = "https://apadmintool.zero21.eu/";
-            driver.FindElement(By.Id("UserName")).SendKeys("SuperAdmin");
+            signInPage.Username.SendKeys("SuperAdmin");
             driver.FindElement(By.Id("Password")).SendKeys("T21kyytt$LVP#");
 
             driver.FindElement(By.CssSelector("button[type='submit']")).Click();
