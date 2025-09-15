@@ -1,25 +1,11 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
-using System.Diagnostics;
-using WebDriverManager.DriverConfigs.Impl;
+using WWT_Automation.Utilities;
 
 namespace WWT_Automation.AdminTool
 {
-    public class SignIn : IDisposable
+    public class SignIn : Base
     {
-        IWebDriver driver;
-        WebDriverWait wait;
-
-        [SetUp]
-        public void StartBrowser()
-        {
-            new WebDriverManager.DriverManager().SetUpDriver(new ChromeConfig());
-            driver = new ChromeDriver();
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
-
-        }
 
         [Test]
         public void SignIn_ValidCredentials_SuccessfulSignIn()
@@ -71,10 +57,6 @@ namespace WWT_Automation.AdminTool
         - Complete 2FA is possible
          */
 
-        [TearDown]
-        public void Dispose()
-        {
-            driver.Quit();
-        }
+        
     }
 }
