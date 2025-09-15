@@ -15,9 +15,9 @@ namespace WWT_Automation.AdminTool
             
             driver.Url = "https://apadmintool.zero21.eu/";
             signInPage.Username.SendKeys("SuperAdmin");
-            driver.FindElement(By.Id("Password")).SendKeys("T21kyytt$LVP#");
+            signInPage.Password.SendKeys("T21kyytt$LVP#");
 
-            driver.FindElement(By.CssSelector("button[type='submit']")).Click();
+            signInPage.SignIn.Click();
             wait.Until(ExpectedConditions.ElementIsVisible(By.Name("topnavForm")));
         }
 
