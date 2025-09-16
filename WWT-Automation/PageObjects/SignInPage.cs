@@ -1,24 +1,35 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.PageObjects;
 
 namespace WWT_Automation.PageObjects
 {
-    public class SignInPage
+    public class SignInPage : BasePage
     {
-        private IWebDriver _driver;
-        public SignInPage(IWebDriver driver)
+        public SignInPage(IWebDriver driver, WebDriverWait wait) : base(driver, wait) { }
+
+        private readonly By _username = By.Id("UserName");
+        private readonly By _password = By.Id("Password");
+        private readonly By _submit = By.CssSelector("button[type='submit']");
+
+        public SignInPage EnterUsername(string username)
         {
-               _driver = driver;
-            PageFactory.InitElements(_driver, this);
+            EnterText(_username, username);
+            return this;
+        }
+        public SignInPage EnterPassword(string password)
+        {
+            EnterText(_password, password);
+            return this;
         }
 
-        [FindsBy(How = How.Id, Using = "UserName")]
-        public IWebElement Username { get; }
+        public MainPage ClickSignIn()
+        {
+            Click(_submit);
+            return new MainPage(Driver, Wait);
+        }
 
-        [FindsBy(How = How.Id, Using = "Password")]
-        public IWebElement Password { get; }
-
-        [FindsBy(How = How.CssSelector, Using = "button[type='submit']")]
-        public IWebElement SignIn { get; }
+        public MainPage SignInAs(string username, string password) =>
+            EnterUsername(username).EnterPassword(password).ClickSignIn();
     }
 }

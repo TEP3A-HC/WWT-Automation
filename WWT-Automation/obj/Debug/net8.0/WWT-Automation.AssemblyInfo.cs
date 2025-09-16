@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WWT-Automation")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3e791a08cb9a249e24ab59a8344cad7c2611be09")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+279af31d3fe1894dd2ad8722f7e8c598ba1d4952")]
 [assembly: System.Reflection.AssemblyProductAttribute("WWT-Automation")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WWT-Automation")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

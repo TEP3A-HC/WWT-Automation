@@ -234,3 +234,7 @@ C:\Users\Nikola\source\repos\WWT-Automation\WWT-Automation\bin\Debug\net8.0\apps
 C:\Users\Nikola\source\repos\WWT-Automation\WWT-Automation\bin\Debug\net8.0\Microsoft.Extensions.Configuration.dll
 C:\Users\Nikola\source\repos\WWT-Automation\WWT-Automation\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
 C:\Users\Nikola\source\repos\WWT-Automation\WWT-Automation\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+D:\Automation\WWT-Automation\bin\Debug\net8.0\appsettings.json
+D:\Automation\WWT-Automation\bin\Debug\net8.0\Microsoft.Extensions.Configuration.dll
+D:\Automation\WWT-Automation\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+D:\Automation\WWT-Automation\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
