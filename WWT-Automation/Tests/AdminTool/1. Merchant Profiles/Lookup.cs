@@ -1,4 +1,6 @@
-﻿using WWT_Automation.PageObjects;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
+using WWT_Automation.PageObjects;
 
 namespace WWT_Automation.Tests.AdminTool._1._Merchant_Profiles
 {
@@ -13,10 +15,25 @@ namespace WWT_Automation.Tests.AdminTool._1._Merchant_Profiles
                 .EnterUsername("SuperAdmin")
                 .EnterPassword("T21kyytt$LVP#")
                 .ClickSignIn()
-                .GoToMerchantProfiles()
+                .ClickOnMerchantProfiles()
                 .ClickOnLookup();
 
-            var accountManagers = merchantLookupPage.OpenAccountManagerDropdown().GetAvailableAccountManagers();
+            var accountManagers = merchantLookupPage.AccountManagersDropdown.Open().GetOptions();
+            var indexOfChosenAccountManager = PickRandomIWebElement(accountManagers);
+            merchantLookupPage.AccountManagersDropdown.ClickByIndex(indexOfChosenAccountManager);
+
+            merchantLookupPage.ClickOnSearchButton().WaitForPopupMessageToDisappear();
+            
+            
+
+        }
+
+        private int PickRandomIWebElement(IList<IWebElement> accountManagers)
+        {
+            int startIndex = accountManagers.Count > 0 && accountManagers[0].Text.Trim().Equals("All", StringComparison.OrdinalIgnoreCase) ? 1 : 0;
+            var random = new Random();
+            return random.Next(startIndex, accountManagers.Count);
+
         }
     }
 }

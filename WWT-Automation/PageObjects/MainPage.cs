@@ -11,7 +11,7 @@ namespace WWT_Automation.PageObjects
         private readonly By _merchantProfiles = By.CssSelector("li[role='button'][data-custom-id = 'merchant-profiles']");
         private readonly By _lookup = By.CssSelector("li[role='button'][data-custom-id = 'merchants']");
 
-        public MainPage GoToMerchantProfiles()
+        public MainPage ClickOnMerchantProfiles()
         {
             Click(_merchantProfiles);
             return new MainPage(Driver, Wait);
