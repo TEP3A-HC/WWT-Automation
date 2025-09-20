@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using WWT_Automation.PageObjects;
+using WWT_Automation.PageObjects._1.MerchantProfiles;
 
 namespace WWT_Automation.Tests.AdminTool._1._Merchant_Profiles
 {
@@ -20,11 +21,20 @@ namespace WWT_Automation.Tests.AdminTool._1._Merchant_Profiles
 
             var accountManagers = merchantLookupPage.AccountManagersDropdown.Open().GetOptions();
             var indexOfChosenAccountManager = PickRandomIWebElement(accountManagers);
+            var selectedAccountManagerFullName = accountManagers[indexOfChosenAccountManager].Text;
             merchantLookupPage.AccountManagersDropdown.ClickByIndex(indexOfChosenAccountManager);
 
             merchantLookupPage.ClickOnSearchButton().WaitForPopupMessageToDisappear();
-            
-            
+
+            LookupPage lookupPage = new LookupPage(Driver, Wait);
+            var columnIndex = lookupPage.GetIndexPositionByColumnName("Account Manager");
+            var rows = lookupPage.Table.Rows();
+
+            for (int i = 0; i < rows.Count; i++)
+            {
+                IWebElement? row = rows[i];
+                Assert.AreSame(lookupPage.Table.Cell(i, indexOfChosenAccountManager).Text, selectedAccountManagerFullName);
+            }
 
         }
 

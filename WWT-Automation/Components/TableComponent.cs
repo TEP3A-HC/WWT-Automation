@@ -29,6 +29,15 @@ namespace WWT_Automation.Components
             _cells = cells ?? By.CssSelector("td");
         }
 
+        private IWebElement Root() =>
+        _wait.Until(d => d.FindElement(_root));
+
+        public IReadOnlyList<IWebElement> HeaderCells() =>
+            Root().FindElements(_headerCells).ToList();
+
+        public IReadOnlyList<IWebElement> Rows() =>
+            Root().FindElements(_rows).Where(r => r.Displayed).ToList();
+
         public int GetIndexOfColumn(string columnName)
         {
             var columns = _wait.Until(d => d.FindElement(_headerCells));
@@ -48,6 +57,20 @@ namespace WWT_Automation.Components
             }
 
             throw new NoSuchElementException($"Column with name '{columnName}' was not found in the table header.");
+        }
+
+        public IWebElement Cell(int rowIndexOneBased, int colIndexOneBased)
+        {
+            var rows = Rows();
+            if (rowIndexOneBased < 1 || rowIndexOneBased > rows.Count)
+                throw new ArgumentOutOfRangeException(nameof(rowIndexOneBased));
+
+            var row = rows[rowIndexOneBased - 1];
+            var cells = row.FindElements(_cells).ToList();
+            if (colIndexOneBased < 1 || colIndexOneBased > cells.Count)
+                throw new ArgumentOutOfRangeException(nameof(colIndexOneBased));
+
+            return cells[colIndexOneBased - 1];
         }
 
     }
