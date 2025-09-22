@@ -42,7 +42,7 @@ namespace WWT_Automation.Tests.AdminTool._1._Merchant_Profiles
             var agents = lookupPage.AgentsDropdown.Open().GetOptions();
             var chosenAgentIndex = PickRandomIndex(agents);
             var selectedAgentFullName = agents[chosenAgentIndex].Text;
-            lookupPage.AgentsDropdown.ClickByIndex(chosenIndex);
+            lookupPage.AgentsDropdown.ClickByIndex(chosenAgentIndex);
             lookupPage.ClickOnSearchButton().WaitForPopupMessageToDisappear();
 
             var columnAgentIndex = lookupPage.GetIndexPositionByColumnName("Agent");
@@ -53,6 +53,24 @@ namespace WWT_Automation.Tests.AdminTool._1._Merchant_Profiles
             {
                 var agentName = lookupPage.Table.GetCellText(i, columnAgentIndex);
                 Assert.That(selectedAgentFullName, Is.EqualTo(agentName));
+            }
+
+            lookupPage.ClickOnClearButton().WaitForPopupMessageToDisappear();
+
+            var merchantStatuses = lookupPage.MerchantStatusesDropdown.Open().GetOptions();
+            var chosenMerchantStatusIndex = PickRandomIndex(merchantStatuses);
+            var selectedMerchantStatus = merchantStatuses[chosenMerchantStatusIndex].Text;
+            lookupPage.MerchantStatusesDropdown.ClickByIndex(chosenMerchantStatusIndex);
+            lookupPage.ClickOnSearchButton().WaitForPopupMessageToDisappear();
+
+            var columnMerchantStatusIndex = lookupPage.GetIndexPositionByColumnName("Merchant Status");
+            var merchantStatusRows = lookupPage.Table.Rows();
+            Assert.That(merchantStatusRows.Count, Is.GreaterThan(0), "No merchants returned after filtering.");
+
+            for (int i = 1; i <= merchantStatusRows.Count; i++)
+            {
+                var merchantStatusName = lookupPage.Table.GetCellText(i, columnMerchantStatusIndex);
+                Assert.That(selectedMerchantStatus, Is.EqualTo(merchantStatusName));
             }
         }
 
