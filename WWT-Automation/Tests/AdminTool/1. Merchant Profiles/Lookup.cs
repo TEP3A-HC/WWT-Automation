@@ -7,42 +7,59 @@ namespace WWT_Automation.Tests.AdminTool._1._Merchant_Profiles
 {
     public class Lookup : BaseTest
     {
+        private static readonly Random _random = new Random();
+
         [Test]
         public void MerchantProfilesLookup_FilterMerchants_DisplayFilteredMerchants()
         {
             Driver.Navigate().GoToUrl("https://apadmintool.zero21.eu/");
 
-            var merchantLookupPage = new SignInPage(Driver, Wait)
+            var lookupPage = new SignInPage(Driver, Wait)
                 .EnterUsername("SuperAdmin")
                 .EnterPassword("T21kyytt$LVP#")
                 .ClickSignIn()
                 .ClickOnMerchantProfiles()
                 .ClickOnLookup();
 
-            var accountManagers = merchantLookupPage.AccountManagersDropdown.Open().GetOptions();
-            var indexOfChosenAccountManager = PickRandomIWebElement(accountManagers);
-            var selectedAccountManagerFullName = accountManagers[indexOfChosenAccountManager].Text;
-            merchantLookupPage.AccountManagersDropdown.ClickByIndex(indexOfChosenAccountManager);
+            var accountManagers = lookupPage.AccountManagersDropdown.Open().GetOptions();
+            var chosenIndex = PickRandomIndex(accountManagers);
+            var selectedAccountManagerFullName = accountManagers[chosenIndex].Text;
+            lookupPage.AccountManagersDropdown.ClickByIndex(chosenIndex);
+            lookupPage.ClickOnSearchButton().WaitForPopupMessageToDisappear();
 
-            merchantLookupPage.ClickOnSearchButton().WaitForPopupMessageToDisappear();
-
-            LookupPage lookupPage = new LookupPage(Driver, Wait);
             var columnIndex = lookupPage.GetIndexPositionByColumnName("Account Manager");
-            var rows = lookupPage.Table.Rows();
+            var accountManagerRows = lookupPage.Table.Rows();
+            Assert.That(accountManagerRows.Count, Is.GreaterThan(0), "No merchants returned after filtering.");
 
-            for (int i = 0; i < rows.Count; i++)
+            for (int i = 1; i <= accountManagerRows.Count; i++)
             {
-                IWebElement? row = rows[i];
-                Assert.AreSame(lookupPage.Table.Cell(i, indexOfChosenAccountManager).Text, selectedAccountManagerFullName);
+                var accountManagerName = lookupPage.Table.GetCellText(i, columnIndex);
+                Assert.That(selectedAccountManagerFullName, Is.EqualTo(accountManagerName));
             }
 
+            lookupPage.ClickOnClearButton().WaitForPopupMessageToDisappear();
+
+            var agents = lookupPage.AgentsDropdown.Open().GetOptions();
+            var chosenAgentIndex = PickRandomIndex(agents);
+            var selectedAgentFullName = agents[chosenAgentIndex].Text;
+            lookupPage.AgentsDropdown.ClickByIndex(chosenIndex);
+            lookupPage.ClickOnSearchButton().WaitForPopupMessageToDisappear();
+
+            var columnAgentIndex = lookupPage.GetIndexPositionByColumnName("Agent");
+            var agentRows = lookupPage.Table.Rows();
+            Assert.That(agentRows.Count, Is.GreaterThan(0), "No merchants returned after filtering.");
+
+            for (int i = 1; i <= agentRows.Count; i++)
+            {
+                var agentName = lookupPage.Table.GetCellText(i, columnAgentIndex);
+                Assert.That(selectedAgentFullName, Is.EqualTo(agentName));
+            }
         }
 
-        private int PickRandomIWebElement(IList<IWebElement> accountManagers)
+        private int PickRandomIndex(IList<IWebElement> accountManagers)
         {
             int startIndex = accountManagers.Count > 0 && accountManagers[0].Text.Trim().Equals("All", StringComparison.OrdinalIgnoreCase) ? 1 : 0;
-            var random = new Random();
-            return random.Next(startIndex, accountManagers.Count);
+            return _random.Next(startIndex, accountManagers.Count);
 
         }
     }

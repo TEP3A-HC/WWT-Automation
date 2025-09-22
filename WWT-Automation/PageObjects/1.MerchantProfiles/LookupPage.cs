@@ -29,12 +29,19 @@ namespace WWT_Automation.PageObjects._1.MerchantProfiles
         private readonly By _availableMerchantStatuses = By.CssSelector("md-select-menu[role='presentation'][class='_md'] md-content md-option[ng-repeat='reviewStatus in vm.MerchantReviewStatus']");
 
         private readonly By _searchButton = By.CssSelector("button[type='button'][ng-click='vm.SearchMerchant()']");
+        private readonly By _clearButton = By.CssSelector("button[type='button'][ng-click='vm.ClearSearch()']");
 
-        private readonly By _tableRoot = By.CssSelector("table[id='printTable']");
+        private readonly By _tableRoot = By.CssSelector("table[id='printMerchantTable']");
 
         public LookupPage ClickOnSearchButton()
         {
             Click(_searchButton);
+            return this;
+        }
+
+        public LookupPage ClickOnClearButton()
+        {
+            Click(_clearButton);
             return this;
         }
 

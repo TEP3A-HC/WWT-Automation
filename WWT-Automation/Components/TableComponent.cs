@@ -73,5 +73,11 @@ namespace WWT_Automation.Components
             return cells[colIndexOneBased - 1];
         }
 
+        public string GetCellText(int rowIndexOneBased, int colIndexOneBased)
+        {
+            var cell = Cell(rowIndexOneBased, colIndexOneBased);
+            return cell.Text.Trim();
+        }
+
     }
 }
