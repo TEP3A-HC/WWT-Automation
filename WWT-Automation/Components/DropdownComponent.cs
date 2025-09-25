@@ -9,6 +9,7 @@ namespace WWT_Automation.Components
         private readonly WebDriverWait _wait;
         private readonly By _dropdownLocator;
         private readonly By _optionsLocator;
+        private static readonly Random _random = new Random();
 
         public DropdownComponent(IWebDriver driver, WebDriverWait wait, By dropdownLocator, By optionsLocator)
         {
@@ -47,6 +48,38 @@ namespace WWT_Automation.Components
             ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].scrollIntoView({block:'center'})", target);
             target.Click();
             return this;
+        }
+
+        public DropdownComponent ClickByText(string text, StringComparison comparison = StringComparison.OrdinalIgnoreCase)
+        {
+            var options = GetOptions();
+            var target = options.FirstOrDefault(o =>
+                o.Text.Trim().Equals(text.Trim(), comparison));
+
+            if (target == null)
+                throw new NoSuchElementException(
+                    $"No dropdown option with text '{text}' was found.");
+
+            ((IJavaScriptExecutor)_driver).ExecuteScript(
+                "arguments[0].scrollIntoView({block:'center'})", target);
+
+            target.Click();
+            return this;
+        }
+
+        public string ChooseNewDropdownValue(string currentValue, IList<IWebElement> availableDropdownValues)
+        {
+            if (availableDropdownValues == null || availableDropdownValues.Count == 0)
+                throw new InvalidOperationException("No dropdown options available.");
+
+            string newValue;
+
+            do
+            {
+                newValue = availableDropdownValues[_random.Next(availableDropdownValues.Count)].Text.Trim();
+            } while (currentValue == newValue);
+
+            return newValue;
         }
     }
 }

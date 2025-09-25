@@ -35,4 +35,35 @@ public abstract class BasePage
     }
 
     protected void Click(By by) => Clickable(by).Click();
+
+    protected string GetText(By by)
+    {
+        return Visible(by).Text.Trim();
+    }
+
+    protected bool IsDisplayed(By by)
+    {
+        try
+        {
+            return Visible(by).Displayed;
+        }
+        catch (WebDriverTimeoutException)
+        {
+            return false;
+        }
+    }
+
+    protected bool IsEnabled(By by)
+    {
+        try
+        {
+            return Visible(by).Enabled;
+        }
+        catch (WebDriverTimeoutException)
+        {
+            return false;
+        }
+    }
+
+
 }

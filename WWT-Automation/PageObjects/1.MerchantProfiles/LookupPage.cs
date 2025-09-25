@@ -10,6 +10,7 @@ namespace WWT_Automation.PageObjects._1.MerchantProfiles
         public DropdownComponent AgentsDropdown { get; }
         public DropdownComponent MerchantStatusesDropdown { get; }
         public TableComponent Table { get; }
+        public PaginationComponent Pagination { get; }
 
         public LookupPage(IWebDriver driver, WebDriverWait wait) : base(driver, wait)
         {
@@ -17,7 +18,10 @@ namespace WWT_Automation.PageObjects._1.MerchantProfiles
             AgentsDropdown = new DropdownComponent(Driver, Wait, _agentDropdown, _availableAgents);
             MerchantStatusesDropdown = new DropdownComponent(Driver, Wait, _merchantStatusDropdown, _availableMerchantStatuses);
             Table = new TableComponent(Driver, Wait, _tableRoot);
+            Pagination = new PaginationComponent(Driver, Wait);
         }
+
+        private readonly By _searchTextField = By.CssSelector("[ng-model='vm.Search']");
 
         private readonly By _accountManagerDropdown = By.CssSelector("md-select[ng-model='vm.AccountManagerSearch']");
         private readonly By _availableAccountManagers = By.CssSelector("md-select-menu[role='presentation'][class='_md md-overflow'] md-content md-option[ng-repeat='accountManager in vm.accountManagers']");
@@ -32,6 +36,12 @@ namespace WWT_Automation.PageObjects._1.MerchantProfiles
         private readonly By _clearButton = By.CssSelector("button[type='button'][ng-click='vm.ClearSearch()']");
 
         private readonly By _tableRoot = By.CssSelector("table[id='printMerchantTable']");
+
+        public LookupPage TypeInsideSearchField(string text)
+        {
+            EnterText(_searchTextField, text);
+            return this;
+        }
 
         public LookupPage ClickOnSearchButton()
         {
@@ -55,6 +65,13 @@ namespace WWT_Automation.PageObjects._1.MerchantProfiles
         public int GetIndexPositionByColumnName(string columnName)
         {
             return Table.GetIndexOfColumn(columnName);
+        }
+
+        public MerchantPage ClickOnFirstMerchant()
+        {
+            WaitForPopupMessageToDisappear();
+            Table.Cell(1, 1).Click();
+            return new MerchantPage(Driver, Wait);
         }
     }
 }
