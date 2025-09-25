@@ -34,6 +34,16 @@ namespace WWT_Automation.Tests.AdminTool._1._Merchant_Profiles
             var availableAccountManagers = merchantPage.AccountManagersDropdown.Open().GetOptions();
             var newAccountManager = merchantPage.AccountManagersDropdown.ChooseNewDropdownValue(accountManagerFullName, availableAccountManagers);
             merchantPage.AccountManagersDropdown.ClickByText(newAccountManager);
+
+            var availableAgents = merchantPage.AgentsDropdown.Open().GetOptions();
+            var newAgent = merchantPage.AgentsDropdown.ChooseNewDropdownValue(agentFullName, availableAgents);
+            merchantPage.AgentsDropdown.ClickByText(newAgent);
+
+            var availableComplianceOfficers = merchantPage.ComplianceOfficerDropdown.Open().GetOptions();
+            var newComplianceOfficer = merchantPage.ComplianceOfficerDropdown.ChooseNewDropdownValue(complianceOfficerFullName, availableComplianceOfficers);
+            merchantPage.ComplianceOfficerDropdown.ClickByText(newComplianceOfficer);
+
+
         }
 
     }
