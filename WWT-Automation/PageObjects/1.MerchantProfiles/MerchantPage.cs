@@ -57,7 +57,14 @@ namespace WWT_Automation.PageObjects._1.MerchantProfiles
 
         public string GetFraudWatchReason()
         {
-            return GetText(_fraudWatchReason);
+            if (IsDisplayed(_fraudWatchReason))
+            {
+                return GetText(_fraudWatchReason);
+            }
+            else
+            {
+                return string.Empty;
+            }
         }
 
         public MerchantPage ClickOnEditButton()
