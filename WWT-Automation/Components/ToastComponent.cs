@@ -12,7 +12,7 @@ namespace WWT_Automation.Components
         public ToastComponent(IWebDriver driver, WebDriverWait wait)
         {
             _driver = driver;
-            _wait = wait;   
+            _wait = wait;
         }
 
         public void WaitForToastToAppear(TimeSpan? timeout = null)
@@ -25,6 +25,12 @@ namespace WWT_Automation.Components
         {
             var localWait = timeout.HasValue ? new WebDriverWait(_driver, timeout.Value) : _wait;
             localWait.Until(d => !d.FindElements(_toast).Any(t => t.Displayed));
+        }
+
+        public void WaitForPopupMessageToDisappear()
+        {
+            WaitForToastToAppear();
+            WaitForToastToDisappear();
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WWT_Automation.Components
 {
@@ -74,12 +76,38 @@ namespace WWT_Automation.Components
 
             string newValue;
 
+            var name = availableDropdownValues[2].Text.Trim();
+
             do
             {
                 newValue = availableDropdownValues[_random.Next(availableDropdownValues.Count)].Text.Trim();
             } while (currentValue == newValue);
 
             return newValue;
+        }
+
+        public string ClickRandomOption(bool skipFirstIfPlaceholder = true)
+        {
+            var options = GetOptions();
+            if (options.Count == 0)
+                throw new InvalidOperationException("No dropdown options available.");
+
+            int start = 0;
+            if (skipFirstIfPlaceholder && options.Count > 0)
+            {
+                var firstText = options[0].Text.Trim();
+                if (string.Equals(firstText, "All", StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(firstText, "N/A", StringComparison.OrdinalIgnoreCase))
+                {
+                    start = 1;
+                }
+            }
+
+            var pick = options[_random.Next(start, options.Count)];
+            ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].scrollIntoView({block:'center'})", pick);
+            pick.Click();
+
+            return pick.Text.Trim(); // return the selected text
         }
     }
 }

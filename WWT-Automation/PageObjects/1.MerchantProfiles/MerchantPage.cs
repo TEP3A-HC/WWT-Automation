@@ -23,16 +23,25 @@ namespace WWT_Automation.PageObjects._1.MerchantProfiles
 
         private readonly By _fraudWatchCheckbox = By.CssSelector("md-checkbox[ng-model='form.IsFraudWatch'] div div");
 
+        private readonly By _fraudWatchDropdown = By.CssSelector("md-input-container md-select[name='fraudwatch']");
+        private readonly By _availableFraudWatchReasonsDropdown = By.CssSelector("md-select-menu[role='presentation'][class='_md']");
+
+        private readonly By _editButton = By.Id("merchantDetailsEditBtn");
+        private readonly By _saveButton = By.Id("merchantSummarySaveBtn");
+
         public DropdownComponent AccountManagersDropdown { get; }
         public DropdownComponent AgentsDropdown { get; }
         public DropdownComponent ComplianceOfficerDropdown { get; }
+        public DropdownComponent FraudWatchDropdown { get; }
+        public ToastComponent ToastComponent { get; }
 
-        private readonly By _editButton = By.Id("merchantDetailsEditBtn");
         public MerchantPage(IWebDriver driver, WebDriverWait wait) : base(driver, wait)
         {
             AccountManagersDropdown = new DropdownComponent(Driver, Wait, _accountManagerDropdown, _availableAccountManagers);
             AgentsDropdown = new DropdownComponent(Driver, Wait, _agentDropdown, _availableAgents);
             ComplianceOfficerDropdown = new DropdownComponent(Driver, Wait, _complianceOfficerDropdown, _availableComplianceOfficer);
+            FraudWatchDropdown = new DropdownComponent(Driver, Wait, _fraudWatchDropdown, _availableFraudWatchReasonsDropdown);
+            ToastComponent = new ToastComponent(Driver, Wait);
         }
 
         public string GetAccountManagerName()
@@ -70,6 +79,28 @@ namespace WWT_Automation.PageObjects._1.MerchantProfiles
         public MerchantPage ClickOnEditButton()
         {
             Click(_editButton);
+            return this;
+        }
+
+        public bool IsMerchantOnFraudWatch()
+        {
+            return IsChecked(_fraudWatchCheckbox);
+        }
+
+        public MerchantPage ClickOnFraudWatchCheckbox()
+        {
+            Click(_fraudWatchCheckbox);
+            return this;
+        }
+
+        public bool IsFraudWatchDropdownDisplayed()
+        {
+            return IsDisplayed(_fraudWatchDropdown);
+        }
+
+        public MerchantPage SaveChanges()
+        {
+            Click(_saveButton);
             return this;
         }
     }

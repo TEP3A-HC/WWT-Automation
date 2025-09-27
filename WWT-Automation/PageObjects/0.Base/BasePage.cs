@@ -65,5 +65,18 @@ public abstract class BasePage
         }
     }
 
+    protected bool IsChecked(By by)
+    {
+        try
+        {
+            var element = Visible(by);
+            return element.Selected;
+        }
+        catch (WebDriverTimeoutException)
+        {
+            return false;
+        }
+    }
+
 
 }
