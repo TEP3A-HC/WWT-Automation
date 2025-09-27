@@ -1,10 +1,4 @@
-﻿using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WWT_Automation.PageObjects;
+﻿using WWT_Automation.PageObjects;
 
 namespace WWT_Automation.Tests.AdminTool._1._Merchant_Profiles
 {
@@ -32,19 +26,11 @@ namespace WWT_Automation.Tests.AdminTool._1._Merchant_Profiles
 
             merchantPage.ClickOnEditButton();
 
-            var availableAccountManagers = merchantPage.AccountManagersDropdown.Open().GetOptions();
-            var newAccountManager = merchantPage.AccountManagersDropdown.ChooseNewDropdownValue(initialAccountManagerFullName, availableAccountManagers);
-            merchantPage.AccountManagersDropdown.ClickByText(newAccountManager);
+            var newAccountManager = merchantPage.AccountManagersDropdown.Open().PickAnyValueExcept(initialAccountManagerFullName);
+            var newAgent = merchantPage.AgentsDropdown.Open().PickAnyValueExcept(initialAgentFullName);
+            var newComplianceOfficer = merchantPage.ComplianceOfficerDropdown.Open().PickAnyValueExcept(initialComplianceOfficerFullName);
 
-            var availableAgents = merchantPage.AgentsDropdown.Open().GetOptions();
-            var newAgent = merchantPage.AgentsDropdown.ChooseNewDropdownValue(initialAgentFullName, availableAgents);
-            merchantPage.AgentsDropdown.ClickByText(newAgent);
-
-            var availableComplianceOfficers = merchantPage.ComplianceOfficerDropdown.Open().GetOptions();
-            var newComplianceOfficer = merchantPage.ComplianceOfficerDropdown.ChooseNewDropdownValue(initialComplianceOfficerFullName, availableComplianceOfficers);
-            merchantPage.ComplianceOfficerDropdown.ClickByText(newComplianceOfficer);
-
-            if (merchantPage.IsMerchantOnFraudWatch())
+            if (initialFraudWatch == "Yes")
             {
                 merchantPage.ClickOnFraudWatchCheckbox();
                 Assert.That(merchantPage.IsFraudWatchDropdownDisplayed(), Is.False);
@@ -71,9 +57,6 @@ namespace WWT_Automation.Tests.AdminTool._1._Merchant_Profiles
             {
                 Assert.That(merchantPage.GetFraudWatchReason(), Is.EqualTo(fraudWatchReason));
             }
-
-
-
         }
 
     }

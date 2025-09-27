@@ -109,5 +109,29 @@ namespace WWT_Automation.Components
 
             return pick.Text.Trim(); // return the selected text
         }
+
+        public string PickAnyValueExcept(string excludedValue)
+        {
+            var options = GetOptions();
+            if (options.Count == 0)
+                throw new InvalidOperationException("No dropdown options available.");
+
+            // Build candidate list excluding the provided value
+            var candidates = options
+                .Where(o => !string.Equals(o.Text.Trim(), excludedValue.Trim(), StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            if (candidates.Count == 0)
+                throw new InvalidOperationException($"No available options different from '{excludedValue}'.");
+
+            // Randomly pick one
+            var pick = candidates[_random.Next(candidates.Count)];
+
+            // Scroll into view and click
+            ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].scrollIntoView({block:'center'})", pick);
+            pick.Click();
+
+            return pick.Text.Trim(); // return the newly selected value
+        }
     }
 }
