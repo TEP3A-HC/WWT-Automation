@@ -13,18 +13,18 @@ namespace WWT_Automation.PageObjects._1.MerchantProfiles
         private readonly By _fraudWatchReason = By.CssSelector("div table tbody tr[ng-show='vm.merchant.IsFraudWatch'] td strong");
 
         private readonly By _accountManagerDropdown = By.CssSelector("md-select[ng-model='form.AccountManagerId']");
-        private readonly By _availableAccountManagers = By.CssSelector("md-select-menu[role='presentation'][class='_md']");
+        private readonly By _availableAccountManagers = By.CssSelector("md-select-menu md-option[ng-repeat='am in accountManagers']");
 
         private readonly By _agentDropdown = By.CssSelector("md-select[ng-model='form.AgentId']");
-        private readonly By _availableAgents = By.CssSelector("md-select-menu[role='presentation'][class='_md']");
+        private readonly By _availableAgents = By.CssSelector("md-select-menu md-content md-option[ng-repeat='a in agents']");
 
         private readonly By _complianceOfficerDropdown = By.CssSelector("md-select[ng-model='form.ComplianceOfficerId']");
-        private readonly By _availableComplianceOfficer = By.CssSelector("md-select-menu[role='presentation'][class='_md']");
+        private readonly By _availableComplianceOfficer = By.CssSelector("md-select-menu md-content md-option[ng-repeat='co in complianceOfficers']");
 
         private readonly By _fraudWatchCheckbox = By.CssSelector("md-checkbox[ng-model='form.IsFraudWatch'] div div");
 
         private readonly By _fraudWatchDropdown = By.CssSelector("md-input-container md-select[name='fraudwatch']");
-        private readonly By _availableFraudWatchReasonsDropdown = By.CssSelector("md-select-menu[role='presentation'][class='_md']");
+        private readonly By _availableFraudWatchReasonsDropdown = By.CssSelector("md-select-menu md-content md-option[ng-repeat='r in fraudWatchReasons']");
 
         private readonly By _editButton = By.Id("merchantDetailsEditBtn");
         private readonly By _saveButton = By.Id("merchantSummarySaveBtn");

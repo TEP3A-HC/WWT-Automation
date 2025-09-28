@@ -55,8 +55,7 @@ namespace WWT_Automation.Components
         public DropdownComponent ClickByText(string text, StringComparison comparison = StringComparison.OrdinalIgnoreCase)
         {
             var options = GetOptions();
-            var target = options.FirstOrDefault(o =>
-                o.Text.Trim().Equals(text.Trim(), comparison));
+            var target = options.FirstOrDefault(o => o.Text.Trim().Equals(text.Trim(), comparison));
 
             if (target == null)
                 throw new NoSuchElementException(
@@ -118,7 +117,7 @@ namespace WWT_Automation.Components
 
             // Build candidate list excluding the provided value
             var candidates = options
-                .Where(o => !string.Equals(o.Text.Trim(), excludedValue.Trim(), StringComparison.OrdinalIgnoreCase))
+                .Where(o => !string.Equals(o.FindElement(By.CssSelector(".md-text")).Text.Trim(), excludedValue.Trim(), StringComparison.OrdinalIgnoreCase))
                 .ToList();
 
             if (candidates.Count == 0)
@@ -128,10 +127,10 @@ namespace WWT_Automation.Components
             var pick = candidates[_random.Next(candidates.Count)];
 
             // Scroll into view and click
-            ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].scrollIntoView({block:'center'})", pick);
+            //((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].scrollIntoView({block:'center'})", pick);
             pick.Click();
 
-            return pick.Text.Trim(); // return the newly selected value
+            return pick.FindElement(By.CssSelector(".md-text")).Text.Trim(); // return the newly selected value
         }
     }
 }
