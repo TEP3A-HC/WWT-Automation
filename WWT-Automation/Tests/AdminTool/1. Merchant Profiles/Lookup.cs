@@ -20,10 +20,7 @@ namespace WWT_Automation.Tests.AdminTool._1._Merchant_Profiles
                 .ClickOnLookup();
 
             #region Account managers
-            var accountManagers = lookupPage.AccountManagersDropdown.Open().GetOptions();
-            var chosenIndex = PickRandomIndex(accountManagers);
-            var selectedAccountManagerFullName = accountManagers[chosenIndex].Text;
-            lookupPage.AccountManagersDropdown.ClickByIndex(chosenIndex);
+            var accountManager = lookupPage.AccountManagersDropdown.Open().ClickRandomOption();
             lookupPage.ClickOnSearchButton().WaitForPopupMessageToDisappear();
 
             var columnIndex = lookupPage.GetIndexPositionByColumnName("Account Manager");
@@ -33,17 +30,14 @@ namespace WWT_Automation.Tests.AdminTool._1._Merchant_Profiles
             for (int i = 1; i <= accountManagerRows.Count; i++)
             {
                 var accountManagerName = lookupPage.Table.GetCellText(i, columnIndex);
-                Assert.That(selectedAccountManagerFullName, Is.EqualTo(accountManagerName));
+                Assert.That(accountManager, Is.EqualTo(accountManagerName));
             }
             #endregion
 
             lookupPage.ClickOnClearButton().WaitForPopupMessageToDisappear();
 
             #region Agent
-            var agents = lookupPage.AgentsDropdown.Open().GetOptions();
-            var chosenAgentIndex = PickRandomIndex(agents);
-            var selectedAgentFullName = agents[chosenAgentIndex].Text;
-            lookupPage.AgentsDropdown.ClickByIndex(chosenAgentIndex);
+            var agent = lookupPage.AgentsDropdown.Open().ClickRandomOption();
             lookupPage.ClickOnSearchButton().WaitForPopupMessageToDisappear();
 
             var columnAgentIndex = lookupPage.GetIndexPositionByColumnName("Agent");
@@ -53,17 +47,14 @@ namespace WWT_Automation.Tests.AdminTool._1._Merchant_Profiles
             for (int i = 1; i <= agentRows.Count; i++)
             {
                 var agentName = lookupPage.Table.GetCellText(i, columnAgentIndex);
-                Assert.That(selectedAgentFullName, Is.EqualTo(agentName));
+                Assert.That(agent, Is.EqualTo(agentName));
             }
             #endregion
 
             lookupPage.ClickOnClearButton().WaitForPopupMessageToDisappear();
 
             #region Merchant status
-            var merchantStatuses = lookupPage.MerchantStatusesDropdown.Open().GetOptions();
-            var chosenMerchantStatusIndex = PickRandomIndex(merchantStatuses);
-            var selectedMerchantStatus = merchantStatuses[chosenMerchantStatusIndex].Text;
-            lookupPage.MerchantStatusesDropdown.ClickByIndex(chosenMerchantStatusIndex);
+            var merchantStatus = lookupPage.MerchantStatusesDropdown.Open().ClickRandomOption();
             lookupPage.ClickOnSearchButton().WaitForPopupMessageToDisappear();
 
             var columnMerchantStatusIndex = lookupPage.GetIndexPositionByColumnName("Merchant Status");
@@ -73,9 +64,33 @@ namespace WWT_Automation.Tests.AdminTool._1._Merchant_Profiles
             for (int i = 1; i <= merchantStatusRows.Count; i++)
             {
                 var merchantStatusName = lookupPage.Table.GetCellText(i, columnMerchantStatusIndex);
-                Assert.That(selectedMerchantStatus, Is.EqualTo(merchantStatusName));
+                Assert.That(merchantStatus, Is.EqualTo(merchantStatusName));
             }
             #endregion
+        }
+
+        [Test]
+        public void MerchantProfilesLookup_FilterMerchantsByAccountStatus_DisplayFilteredMerchants()
+        {
+            Driver.Navigate().GoToUrl("https://apadmintool.zero21.eu/");
+
+            string pickedAccountStatus;
+
+            var lookupPage = new SignInPage(Driver, Wait)
+                .EnterUsername("SuperAdmin")
+                .EnterPassword("T21kyytt$LVP#")
+                .ClickSignIn()
+                .ClickOnMerchantProfiles()
+                .ClickOnLookup()
+                .AccountStatusesDropdown.Open()
+                .ClickRandomOption(out pickedAccountStatus)
+                .ClickOnSearchButton()
+                .WaitForPopupMessageToDisappear()
+                .OpenRandomMerchantFromResults();
+
+            var accountStatus = lookupPage.GetAccountStatus();
+
+            Assert.That(pickedAccountStatus, Is.EqualTo(accountStatus));
         }
 
         [Test]
@@ -88,12 +103,13 @@ namespace WWT_Automation.Tests.AdminTool._1._Merchant_Profiles
                     .EnterPassword("T21kyytt$LVP#")
                     .ClickSignIn()
                     .ClickOnMerchantProfiles()
-                    .ClickOnLookup();
+                    .ClickOnLookup()
+                    .TypeInsideSearchField("cbc151a")
+                    .ClickOnSearchButton()
+                    .WaitForPopupMessageToDisappear();
 
             #region Search by merchant code
-            lookupPage.TypeInsideSearchField("cbc151a").ClickOnSearchButton().WaitForPopupMessageToDisappear();
             var filteredTableByMerchantCode = lookupPage.Table.Rows();
-
             Assert.That(filteredTableByMerchantCode.Count, Is.EqualTo(1));
             Assert.That(lookupPage.Table.GetCellText(1, 1), Is.EqualTo("mer_cbc151a")); 
             #endregion
@@ -112,13 +128,6 @@ namespace WWT_Automation.Tests.AdminTool._1._Merchant_Profiles
             } 
             #endregion
 
-
-        }
-
-        private int PickRandomIndex(IList<IWebElement> accountManagers)
-        {
-            int startIndex = accountManagers.Count > 0 && accountManagers[0].Text.Trim().Equals("All", StringComparison.OrdinalIgnoreCase) ? 1 : 0;
-            return _random.Next(startIndex, accountManagers.Count);
 
         }
     }

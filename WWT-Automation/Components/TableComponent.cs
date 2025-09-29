@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using System;
 
 namespace WWT_Automation.Components
 {
@@ -12,6 +13,7 @@ namespace WWT_Automation.Components
         private readonly By _headerCells;        // th under thead
         private readonly By _rows;               // tr under tbody
         private readonly By _cells;              // td under tr
+        private static readonly Random _random = new Random();
 
         public TableComponent(IWebDriver driver, WebDriverWait wait, By root, By? headerCells = null, By? rows = null, By? cells = null)
         {
@@ -73,5 +75,15 @@ namespace WWT_Automation.Components
             return cell.Text.Trim();
         }
 
+        public TableComponent ClickOnRandomRow()
+        {
+            var rows = Rows();
+            if (rows.Count == 0) throw new InvalidOperationException("No rows.");
+            int idx = _random.Next(1, rows.Count + 1);
+            var firstCell = Cell(idx, 1);
+            ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].scrollIntoView({block:'center'})", firstCell);
+            firstCell.Click();
+            return this; // or void
+        }
     }
 }

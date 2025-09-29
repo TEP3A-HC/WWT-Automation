@@ -22,6 +22,5 @@ namespace WWT_Automation.PageObjects
             Click(_lookup);
             return new LookupPage(Driver, Wait);
         }
-
     }
 }

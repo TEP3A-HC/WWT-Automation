@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
 using WWT_Automation.Components;
 
 namespace WWT_Automation.PageObjects._1.MerchantProfiles
@@ -11,6 +12,7 @@ namespace WWT_Automation.PageObjects._1.MerchantProfiles
         private readonly By _complianceOfficer = By.CssSelector("div table tbody tr td strong[ng-show*=\"ComplianceOfficer\"][aria-hidden='false']");
         private readonly By _fraudWatch = By.CssSelector("td[class='padding-sm'] span[aria-hidden='false']");
         private readonly By _fraudWatchReason = By.CssSelector("div table tbody tr[ng-show='vm.merchant.IsFraudWatch'] td strong");
+        private readonly By _accountStatus = By.CssSelector("td[ng-switch='vm.merchant.MasterStatus'] span.label");
 
         private readonly By _accountManagerDropdown = By.CssSelector("md-select[ng-model='form.AccountManagerId']");
         private readonly By _availableAccountManagers = By.CssSelector("md-select-menu md-option[ng-repeat='am in accountManagers']");
@@ -26,21 +28,25 @@ namespace WWT_Automation.PageObjects._1.MerchantProfiles
         private readonly By _fraudWatchDropdown = By.CssSelector("md-input-container md-select[name='fraudwatch']");
         private readonly By _availableFraudWatchReasonsDropdown = By.CssSelector("md-select-menu md-content md-option[ng-repeat='r in fraudWatchReasons']");
 
+        private readonly By _tableRoot = By.CssSelector("table[id='printMerchantTable']");
+
         private readonly By _editButton = By.Id("merchantDetailsEditBtn");
         private readonly By _saveButton = By.Id("merchantSummarySaveBtn");
 
-        public DropdownComponent AccountManagersDropdown { get; }
-        public DropdownComponent AgentsDropdown { get; }
-        public DropdownComponent ComplianceOfficerDropdown { get; }
-        public DropdownComponent FraudWatchDropdown { get; }
+        public DropdownComponent<MerchantPage> AccountManagersDropdown { get; }
+        public DropdownComponent<MerchantPage> AgentsDropdown { get; }
+        public DropdownComponent<MerchantPage> ComplianceOfficerDropdown { get; }
+        public DropdownComponent<MerchantPage> FraudWatchDropdown { get; }
+        public TableComponent Table { get; }
         public ToastComponent ToastComponent { get; }
 
         public MerchantPage(IWebDriver driver, WebDriverWait wait) : base(driver, wait)
         {
-            AccountManagersDropdown = new DropdownComponent(Driver, Wait, _accountManagerDropdown, _availableAccountManagers);
-            AgentsDropdown = new DropdownComponent(Driver, Wait, _agentDropdown, _availableAgents);
-            ComplianceOfficerDropdown = new DropdownComponent(Driver, Wait, _complianceOfficerDropdown, _availableComplianceOfficer);
-            FraudWatchDropdown = new DropdownComponent(Driver, Wait, _fraudWatchDropdown, _availableFraudWatchReasonsDropdown);
+            AccountManagersDropdown = new DropdownComponent<MerchantPage>(Driver, Wait, _accountManagerDropdown, _availableAccountManagers, this);
+            AgentsDropdown = new DropdownComponent<MerchantPage>(Driver, Wait, _agentDropdown, _availableAgents, this);
+            ComplianceOfficerDropdown = new DropdownComponent<MerchantPage>(Driver, Wait, _complianceOfficerDropdown, _availableComplianceOfficer, this);
+            FraudWatchDropdown = new DropdownComponent<MerchantPage>(Driver, Wait, _fraudWatchDropdown, _availableFraudWatchReasonsDropdown, this);
+            Table = new TableComponent(Driver, Wait, _tableRoot);
             ToastComponent = new ToastComponent(Driver, Wait);
         }
 
@@ -74,6 +80,11 @@ namespace WWT_Automation.PageObjects._1.MerchantProfiles
             {
                 return string.Empty;
             }
+        }
+
+        public string GetAccountStatus()
+        {
+            return GetText(_accountStatus);
         }
 
         public MerchantPage ClickOnEditButton()

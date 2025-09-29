@@ -5,23 +5,27 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace WWT_Automation.Components
 {
-    public sealed class DropdownComponent
+    public sealed class DropdownComponent<TOwner> where TOwner : BasePage
     {
         private readonly IWebDriver _driver;
         private readonly WebDriverWait _wait;
         private readonly By _dropdownLocator;
         private readonly By _optionsLocator;
+        private readonly TOwner _owner;
         private static readonly Random _random = new Random();
 
-        public DropdownComponent(IWebDriver driver, WebDriverWait wait, By dropdownLocator, By optionsLocator)
+        public string LastSelectedText { get; private set; } = string.Empty;
+
+        public DropdownComponent(IWebDriver driver, WebDriverWait wait, By dropdownLocator, By optionsLocator, TOwner owner)
         {
             _driver = driver;
             _wait = wait;
             _dropdownLocator = dropdownLocator;
             _optionsLocator = optionsLocator;
+            _owner = owner;
         }
 
-        public DropdownComponent Open()
+        public DropdownComponent<TOwner> Open()
         {
             _wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(_dropdownLocator)).Click();
 
@@ -39,7 +43,13 @@ namespace WWT_Automation.Components
             return _wait.Until(d => d.FindElements(_optionsLocator)).ToList();
         }
 
-        public DropdownComponent ClickByIndex(int index)
+        private static string LabelOf(IWebElement option)
+        {
+            try { return option.FindElement(By.CssSelector(".md-text")).Text.Trim(); }
+            catch { return (option.Text ?? "").Trim(); }
+        }
+
+        public DropdownComponent<TOwner> ClickByIndex(int index)
         {
             var options = GetOptions();
             if (index < 0 || index >= options.Count)
@@ -52,7 +62,7 @@ namespace WWT_Automation.Components
             return this;
         }
 
-        public DropdownComponent ClickByText(string text, StringComparison comparison = StringComparison.OrdinalIgnoreCase)
+        public DropdownComponent<TOwner> ClickByText(string text, StringComparison comparison = StringComparison.OrdinalIgnoreCase)
         {
             var options = GetOptions();
             var target = options.FirstOrDefault(o => o.Text.Trim().Equals(text.Trim(), comparison));
@@ -68,24 +78,7 @@ namespace WWT_Automation.Components
             return this;
         }
 
-        public string ChooseNewDropdownValue(string currentValue, IList<IWebElement> availableDropdownValues)
-        {
-            if (availableDropdownValues == null || availableDropdownValues.Count == 0)
-                throw new InvalidOperationException("No dropdown options available.");
-
-            string newValue;
-
-            var name = availableDropdownValues[2].Text.Trim();
-
-            do
-            {
-                newValue = availableDropdownValues[_random.Next(availableDropdownValues.Count)].Text.Trim();
-            } while (currentValue == newValue);
-
-            return newValue;
-        }
-
-        public string ClickRandomOption(bool skipFirstIfPlaceholder = true)
+        public TOwner ClickRandomOption(out string selectedText, bool skipFirstIfPlaceholder = true)
         {
             var options = GetOptions();
             if (options.Count == 0)
@@ -95,7 +88,7 @@ namespace WWT_Automation.Components
             if (skipFirstIfPlaceholder && options.Count > 0)
             {
                 var firstText = options[0].Text.Trim();
-                if (string.Equals(firstText, "All", StringComparison.OrdinalIgnoreCase) ||
+                if (string.Equals(firstText, "[All]", StringComparison.OrdinalIgnoreCase) ||
                     string.Equals(firstText, "N/A", StringComparison.OrdinalIgnoreCase))
                 {
                     start = 1;
@@ -104,9 +97,16 @@ namespace WWT_Automation.Components
 
             var pick = options[_random.Next(start, options.Count)];
             ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].scrollIntoView({block:'center'})", pick);
+            selectedText = LastSelectedText = LabelOf(pick);
             pick.Click();
 
-            return pick.Text.Trim(); // return the selected text
+            return _owner; // return the selected text
+        }
+
+        public string ClickRandomOption(bool skipFirstIfPlaceholder = true)
+        {
+            ClickRandomOption(out var selected, skipFirstIfPlaceholder);
+            return selected;
         }
 
         public string PickAnyValueExcept(string excludedValue)
