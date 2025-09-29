@@ -21,7 +21,7 @@ namespace WWT_Automation.PageObjects._1.MerchantProfiles
         private readonly By _complianceOfficerDropdown = By.CssSelector("md-select[ng-model='form.ComplianceOfficerId']");
         private readonly By _availableComplianceOfficer = By.CssSelector("md-select-menu md-content md-option[ng-repeat='co in complianceOfficers']");
 
-        private readonly By _fraudWatchCheckbox = By.CssSelector("md-checkbox[ng-model='form.IsFraudWatch'] div div");
+        private readonly By _fraudWatchCheckbox = By.CssSelector("md-checkbox[ng-model='form.IsFraudWatch']");
 
         private readonly By _fraudWatchDropdown = By.CssSelector("md-input-container md-select[name='fraudwatch']");
         private readonly By _availableFraudWatchReasonsDropdown = By.CssSelector("md-select-menu md-content md-option[ng-repeat='r in fraudWatchReasons']");
